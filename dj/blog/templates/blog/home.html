@@ -1,0 +1,17 @@
+{% extends 'blog/base.html' %}
+
+{% block content %}
+<h1>Добро пожаловать на новостной портал</h1>
+<p>Самые свежие новости каждый день!</p>
+
+<h2>Последние новости</h2>
+{% for news in latest_news %}
+    <div class="news-item" onclick="location.href='{% url 'news_detail' news.id %}'">
+        <h3>{{ news.title }}</h3>
+        <p>{{ news.published_date|date:"d.m.Y" }} | Автор: {{ news.author }}</p>
+        <p>{{ news.content|truncatewords:20 }}</p>
+    </div>
+{% empty %}
+    <p>Новостей пока нет</p>
+{% endfor %}
+{% endblock %}

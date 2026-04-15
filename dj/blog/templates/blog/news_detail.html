@@ -1,0 +1,31 @@
+{% extends 'blog/base.html' %}
+
+{% block content %}
+<h1>{{ news.title }}</h1>
+<p>Автор: {{ news.author }} | {{ news.published_date|date:"d.m.Y H:i" }}</p>
+{% if news.image %}
+    <img src="{{ news.image.url }}" width="300">
+{% endif %}
+<p>{{ news.content|linebreaks }}</p>
+
+<h2>Комментарии</h2>
+{% for comment in comments %}
+    <div class="comment">
+        <strong>{{ comment.user.username }}</strong> ({{ comment.created_date|date:"d.m.Y H:i" }})<br>
+        {{ comment.text }}
+    </div>
+{% empty %}
+    <p>Пока нет комментариев. Будьте первым!</p>
+{% endfor %}
+
+{% if user.is_authenticated %}
+    <h3>Добавить комментарий</h3>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Отправить</button>
+    </form>
+{% else %}
+    <p><a href="{% url 'login' %}">Войдите</a>, чтобы оставить комментарий.</p>
+{% endif %}
+{% endblock %}

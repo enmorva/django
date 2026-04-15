@@ -1,0 +1,25 @@
+{% extends 'blog/base.html' %}
+
+{% block content %}
+<h1>Все новости</h1>
+
+<form method="get">
+    <input type="text" name="search" placeholder="Поиск по названию" value="{{ search_query }}">
+    <button type="submit">Искать</button>
+</form>
+
+<div>
+    <a href="?sort=desc{% if search_query %}&search={{ search_query }}{% endif %}">Сначала новые</a> |
+    <a href="?sort=asc{% if search_query %}&search={{ search_query }}{% endif %}">Сначала старые</a>
+</div>
+
+{% for news in news_list %}
+    <div class="news-item" onclick="location.href='{% url 'news_detail' news.id %}'">
+        <h3>{{ news.title }}</h3>
+        <p>{{ news.published_date|date:"d.m.Y H:i" }} | Автор: {{ news.author }}</p>
+        <p>{{ news.content|truncatewords:30 }}</p>
+    </div>
+{% empty %}
+    <p>Новостей не найдено</p>
+{% endfor %}
+{% endblock %}

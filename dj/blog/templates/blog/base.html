@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Мой сайт новостей</title>
+     {% load static %}
+    <link rel="stylesheet" href="{% static 'blog/style.css' %}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body { font-family: Arial; margin: 0; padding: 0; }
+        nav { background: #333; padding: 10px; color: white; }
+        nav a { color: white; margin: 0 10px; text-decoration: none; }
+        .container { padding: 20px; }
+        .user-info { float: right; }
+        .news-item { border: 1px solid #ddd; margin: 10px 0; padding: 10px; cursor: pointer; }
+        .comment { border-left: 3px solid #ccc; margin: 10px 0; padding-left: 10px; }
+        .pagination { margin-top: 20px; }
+    </style>
+</head>
+<body>
+    <nav>
+        <a href="{% url 'home' %}">Главная</a>
+        <a href="{% url 'news_list' %}">Новости</a>
+        <a href="{% url 'contact' %}">Контакты</a>
+        {% if user.is_authenticated %}
+            <span>Привет, {{ user.username }}</span>
+            <a href="{% url 'logout' %}">Выход</a>
+            {% if user.is_superuser or user.is_staff %}
+                <a href="/admin/">Админка</a>
+            {% endif %}
+        {% else %}
+            <a href="{% url 'login' %}">Вход</a>
+            <a href="{% url 'register' %}">Регистрация</a>
+        {% endif %}
+    </nav>
+    <div class="container">
+        {% block content %}{% endblock %}
+    </div>
+</body>
+</html>
